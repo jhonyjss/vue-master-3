@@ -14,7 +14,7 @@
           </p>
           <p class="text-faded text-xsmall">
             By <a href="#"> {{ userById(thread.userId).name }} </a>,
-            {{ thread.publishedAt }}.
+            <app-date :timestamp="thread.publishedAt" />
           </p>
         </div>
 
@@ -28,10 +28,10 @@
           />
 
           <div>
-            <p class="text-xsmall">
-              <a href="#">{{ userById(thread.userId).name }}</a>
+            <p class="text-xsmall"></p>
+            <p class="text-xsmall text-faded">
+              <a href="#">{{ userById(thread.userId).name }} </a>,
             </p>
-            <p class="text-xsmall text-faded">2 hours ago</p>
           </div>
         </div>
       </div>

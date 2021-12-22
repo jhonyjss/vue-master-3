@@ -30,12 +30,13 @@
           style="margin-left: auto"
           class="link-unstyled"
           title="Make a change"
-          ><i class="fa fa-pencil"></i
-        ></a>
+        >
+          <i class="fa fa-pencil"> </i>
+        </a>
       </div>
 
       <div class="post-date text-faded">
-        {{ post.publishedAt }}
+        <app-date :timestamp="post.publishedAt" />
       </div>
     </div>
   </div>
@@ -43,6 +44,7 @@
 
 <script>
 import sourceData from '@/data.json';
+
 export default {
   props: {
     posts: {
