@@ -3,6 +3,7 @@ import Home from '@/pages/Home';
 import ThreadShow from '@/pages/ThreadShow';
 import NotFound from '@/pages/NotFound';
 import Forum from '@/pages/Forum';
+import Category from '@/pages/Category';
 import sourceData from '@/data.json';
 
 const routes = [
@@ -10,6 +11,12 @@ const routes = [
     name: 'Home',
     path: '/',
     component: Home,
+  },
+  {
+    name: 'Category',
+    path: '/categories/:id',
+    component: Category,
+    props: true,
   },
   {
     name: 'Forum',
