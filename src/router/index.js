@@ -14,7 +14,7 @@ const routes = [
   },
   {
     name: 'Category',
-    path: '/categories/:id',
+    path: '/category/:id',
     component: Category,
     props: true,
   },

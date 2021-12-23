@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import sourceData from '@/data.json';
 import PostList from '@/components/PostList';
 import PostEditor from '@/components/PostEditor';
 
@@ -23,14 +22,14 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      threads: sourceData.threads,
-      posts: sourceData.posts,
-    };
-  },
 
   computed: {
+    threads() {
+      return this.$store.state.threads;
+    },
+    posts() {
+      return this.$store.state.posts;
+    },
     thread() {
       return this.threads.find((t) => t.id === this.id);
     },

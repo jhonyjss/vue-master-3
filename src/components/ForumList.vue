@@ -1,7 +1,15 @@
 <template>
   <div class="col-full">
     <div class="forum-list">
-      <h2 class="list-title">{{ categoryName }}</h2>
+      <h2 class="list-title">
+        <router-link
+          v-if="categoryId"
+          :to="{ name: 'Category', params: { id: categoryId } }"
+        >
+          {{ title }}
+        </router-link>
+        <span v-else>{{ title }}</span>
+      </h2>
 
       <div class="forum-listing" v-for="forum in forums" :key="forum.id">
         <div class="forum-details">
@@ -47,9 +55,13 @@ export default {
       type: Array,
       required: true,
     },
-    categoryName: {
+    title: {
       type: String,
       default: 'Forums',
+    },
+    categoryId: {
+      required: false,
+      type: String,
     },
   },
 

@@ -3,12 +3,12 @@
     v-for="category in categories"
     :key="category.id"
     :forums="getForumsForCategory(category)"
-    :category-name="category.name"
+    :title="category.name"
+    :category-id="category.id"
   />
 </template>
 
 <script>
-import sourceData from '@/data.json';
 import ForumList from '@/components/ForumList';
 
 export default {
@@ -24,7 +24,7 @@ export default {
 
   methods: {
     getForumsForCategory(category) {
-      return sourceData.forums.filter(
+      return this.$store.state.forums.filter(
         (forum) => forum.categoryId === category.id
       );
     },
