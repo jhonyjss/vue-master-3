@@ -47,11 +47,15 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      posts: this.$store.state.posts,
-      users: this.$store.state.users,
-    };
+
+  computed: {
+    posts() {
+      return this.$store.state.posts || [];
+    },
+
+    users() {
+      return this.$store.state.users || [];
+    },
   },
 
   methods: {

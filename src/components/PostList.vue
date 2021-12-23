@@ -50,10 +50,12 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      users: this.$store.state.users,
-    };
+
+  computed: {
+    users() {
+      console.warn(this.$store.state);
+      return this.$store.state.users || [];
+    },
   },
   methods: {
     userById(userId) {
