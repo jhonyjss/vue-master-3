@@ -4,6 +4,7 @@ import ThreadShow from '@/pages/ThreadShow';
 import NotFound from '@/pages/NotFound';
 import Forum from '@/pages/Forum';
 import Category from '@/pages/Category';
+import Profile from '@/pages/Profile';
 import sourceData from '@/data.json';
 
 const routes = [
@@ -11,6 +12,12 @@ const routes = [
     name: 'Home',
     path: '/',
     component: Home,
+  },
+  {
+    name: 'Profile',
+    path: '/me',
+    component: Profile,
+    props: true,
   },
   {
     name: 'Category',
