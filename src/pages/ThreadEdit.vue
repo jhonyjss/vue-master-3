@@ -19,7 +19,7 @@ export default {
     ThreadEditor,
   },
   props: {
-    threadId: {
+    id: {
       type: String,
       required: true,
     },
@@ -27,9 +27,7 @@ export default {
 
   computed: {
     thread() {
-      return this.$store.state.threads.find(
-        (thread) => thread.id === this.threadId
-      );
+      return this.$store.state.threads.find((thread) => thread.id === this.id);
     },
 
     text() {
@@ -52,7 +50,7 @@ export default {
     },
 
     cancel() {
-      this.$router.push({ name: 'Forum', param: { id: this.forum.id } });
+      this.$router.push({ name: 'ThreadShow', param: { id: this.thread.id } });
     },
   },
 };

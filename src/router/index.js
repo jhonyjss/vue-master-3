@@ -47,7 +47,7 @@ const routes = [
   },
   {
     name: 'ThreadEdit',
-    path: '/thread/:threadId/edit',
+    path: '/thread/:id/edit',
     component: ThreadEdit,
     props: true,
   },
