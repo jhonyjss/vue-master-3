@@ -2,7 +2,7 @@
   <div class="post-list">
     <div class="post" v-for="post in posts" :key="post.id">
       <div class="user-info">
-        <a href="#" class="user-name">{{ userById(post.userId).text }}</a>
+        <a href="#" class="user-name">{{ userById(post.userId).name }}</a>
 
         <a href="#">
           <img
@@ -12,9 +12,13 @@
           />
         </a>
 
-        <p class="desktop-only text-small">107 posts</p>
+        <p class="desktop-only text-small">
+          {{ userById(post.userId).postCount }} posts
+        </p>
 
-        <p class="desktop-only text-small">23 threads</p>
+        <p class="desktop-only text-small">
+          {{ userById(post.userId).threadsCount }} threads
+        </p>
 
         <span class="online desktop-only">online</span>
       </div>
@@ -53,13 +57,12 @@ export default {
 
   computed: {
     users() {
-      console.warn(this.$store.state);
       return this.$store.state.users || [];
     },
   },
   methods: {
     userById(userId) {
-      return this.users.find((p) => p.id === userId);
+      return this.$store.getters.user(userId);
     },
   },
 };
