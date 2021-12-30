@@ -11,7 +11,7 @@
       </router-link>
     </h1>
     <p>
-      By <a href="#" class="link-unstyled"> {{ thread.author.name }} </a>,
+      By <a href="#" class="link-unstyled"> {{ thread.author?.name }} </a>,
       <AppDate :timestamp="thread.publishedAt" />
       <span style="margin-top: 2px" class="hide-mobile text-faded text-small">
         {{ thread.repliedCount }} replies by
@@ -19,7 +19,7 @@
       </span>
     </p>
 
-    <post-list :posts="threadPosts" />
+    <post-list :posts="threadPosts" v-if="threadPosts" />
     <post-editor @save="addPost" />
   </div>
 </template>
@@ -27,7 +27,6 @@
 <script>
 import PostList from '@/components/PostList';
 import PostEditor from '@/components/PostEditor';
-
 export default {
   name: 'ThreadShow',
   components: {
@@ -54,6 +53,17 @@ export default {
     threadPosts() {
       return this.posts.filter((post) => post.threadId === this.id);
     },
+  },
+
+  async created() {
+    const thread = await this.$store.dispatch('fetchThread', { id: this.id });
+
+    thread.posts.forEach(async (postId) => {
+      const post = await this.$store.dispatch('fetchPost', { id: postId });
+      this.$store.dispatch('fetchUser', {
+        id: post.userId,
+      });
+    });
   },
 
   methods: {

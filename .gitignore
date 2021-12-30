@@ -21,3 +21,7 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+serviceAccount.json
+/src/config/*
+!/src/config/README.md

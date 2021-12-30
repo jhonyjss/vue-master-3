@@ -1,10 +1,14 @@
 import { createStore } from 'vuex';
-import sourceData from '@/data';
 import { findById, upsert } from '@/helpers';
+import firebase from 'firebase/app';
 
 export default createStore({
   state: {
-    ...sourceData,
+    categories: [],
+    forums: [],
+    threads: [],
+    posts: [],
+    users: [],
     authId: 'VXjpr2WHa8Ux4Bnggym8QFLdv5C3',
   },
   getters: {
@@ -12,7 +16,7 @@ export default createStore({
       return getters.user(state.authId);
     },
     user: (state) => {
-      return (id) => {
+      return () => {
         const user = findById(state.users, state.authId);
         if (!user) return null;
         return {
@@ -84,6 +88,43 @@ export default createStore({
       commit('setUser', { user, userId: user.id });
     },
 
+    fetchThread({ commit }, { id }) {
+      return new Promise((resolve) => {
+        const db = firebase.firestore();
+        db.collection('threads')
+          .doc(id)
+          .onSnapshot((doc) => {
+            const thread = { ...doc.data(), id: doc.id };
+            commit('setThread', { thread });
+            resolve(thread);
+          });
+      });
+    },
+    fetchUser({ commit }, { id }) {
+      return new Promise((resolve) => {
+        const db = firebase.firestore();
+        db.collection('users')
+          .doc(id)
+          .onSnapshot((doc) => {
+            const user = { ...doc.data(), id: doc.id };
+            commit('setUser', { user });
+            resolve(user);
+          });
+      });
+    },
+    fetchPost({ commit }, { id }) {
+      return new Promise((resolve) => {
+        const db = firebase.firestore();
+        db.collection('posts')
+          .doc(id)
+          .onSnapshot((doc) => {
+            const post = { ...doc.data(), id: doc.id };
+            commit('setPost', { post });
+            resolve(post);
+          });
+      });
+    },
+
     async updateThread({ commit, state }, { title, text, id }) {
       const thread = state.threads.find((thread) => thread.id === id);
       const post = findById(state.posts, thread.posts[0]);
@@ -104,9 +145,8 @@ export default createStore({
     setThread(state, { thread }) {
       upsert(state.threads, thread);
     },
-    setUser(state, { user, userId }) {
-      const userIdex = state.users.findIndex((user) => user.id === userId);
-      state.users[userIdex] = user;
+    setUser(state, { user }) {
+      upsert(state.users, user);
     },
     appendPostToThread: makeAppendChildtoParentMutation({
       parent: 'threads',

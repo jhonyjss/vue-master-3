@@ -1,7 +1,7 @@
 <template>
   <div class="post-list">
     <div class="post" v-for="post in posts" :key="post.id">
-      <div class="user-info">
+      <div v-if="userById(post.userId)" class="user-info">
         <a href="#" class="user-name">{{ userById(post.userId).name }}</a>
 
         <a href="#">
@@ -57,7 +57,9 @@ export default {
 
   computed: {
     users() {
-      return this.$store.state.users || [];
+      return this.$nextTick(() => {
+        return this.$store.state.users || [];
+      });
     },
   },
   methods: {
