@@ -8,18 +8,17 @@
           <p>
             <router-link
               :to="{ name: 'ThreadShow', params: { id: thread.id } }"
+              >{{ thread.title }}</router-link
             >
-              {{ thread.title }}
-            </router-link>
           </p>
           <p class="text-faded text-xsmall">
-            By <a href="#"> {{ userById(thread.userId).name }} </a>,
-            <app-date :timestamp="thread.publishedAt" />
+            By <a href="#">{{ userById(thread.userId).name }}</a
+            >, <AppDate :timestamp="thread.publishedAt" />.
           </p>
         </div>
 
         <div class="activity">
-          <p class="replies-count">{{ thread.posts.length }} replies</p>
+          <p class="replies-count">{{ thread.repliesCount }} replies</p>
 
           <img
             class="avatar-medium"
@@ -28,9 +27,11 @@
           />
 
           <div>
-            <p class="text-xsmall"></p>
+            <p class="text-xsmall">
+              <a href="#">{{ userById(thread.userId).name }}</a>
+            </p>
             <p class="text-xsmall text-faded">
-              <a href="#">{{ userById(thread.userId).name }} </a>,
+              <AppDate :timestamp="thread.publishedAt" />
             </p>
           </div>
         </div>
@@ -40,6 +41,7 @@
 </template>
 
 <script>
+import { findById } from '@/helpers';
 export default {
   props: {
     threads: {
@@ -47,27 +49,23 @@ export default {
       required: true,
     },
   },
-
   computed: {
     posts() {
-      return this.$store.state.posts || [];
+      return this.$store.state.posts;
     },
-
     users() {
-      return this.$store.state.users || [];
+      return this.$store.state.users;
     },
   },
-
   methods: {
     postById(postId) {
-      return this.posts.find((p) => p.id === postId);
+      return findById(this.posts, postId);
     },
-
     userById(userId) {
-      return this.users.find((p) => p.id === userId);
+      return findById(this.users, userId) || {};
     },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>

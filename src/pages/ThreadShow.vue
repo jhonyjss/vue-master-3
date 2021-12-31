@@ -11,15 +11,18 @@
       </router-link>
     </h1>
     <p>
-      By <a href="#" class="link-unstyled"> {{ thread.author?.name }} </a>,
-      <AppDate :timestamp="thread.publishedAt" />
-      <span style="margin-top: 2px" class="hide-mobile text-faded text-small">
-        {{ thread.repliedCount }} replies by
-        {{ thread.contributorsCount }} contributors
-      </span>
+      By <a href="#" class="link-unstyled">{{ thread.author?.name }}</a
+      >, <AppDate :timestamp="thread.publishedAt" />.
+      <span
+        style="float: right; margin-top: 2px"
+        class="hide-mobile text-faded text-small"
+        >{{ thread.repliesCount }} replies by
+        {{ thread.contributorsCount }} contributors</span
+      >
     </p>
 
-    <post-list :posts="threadPosts" v-if="threadPosts" />
+    <post-list :posts="threadPosts" />
+
     <post-editor @save="addPost" />
   </div>
 </template>
@@ -35,11 +38,10 @@ export default {
   },
   props: {
     id: {
-      type: String,
       required: true,
+      type: String,
     },
   },
-
   computed: {
     threads() {
       return this.$store.state.threads;
@@ -54,29 +56,29 @@ export default {
       return this.posts.filter((post) => post.threadId === this.id);
     },
   },
-
-  async created() {
-    const thread = await this.$store.dispatch('fetchThread', { id: this.id });
-
-    thread.posts.forEach(async (postId) => {
-      const post = await this.$store.dispatch('fetchPost', { id: postId });
-      this.$store.dispatch('fetchUser', {
-        id: post.userId,
-      });
-    });
-  },
-
   methods: {
-    addPost(eventdata) {
+    addPost(eventData) {
       const post = {
-        ...eventdata.post,
+        ...eventData.post,
         threadId: this.id,
       };
-
       this.$store.dispatch('createPost', post);
-
-      this.thread.posts.push(post.id);
     },
+  },
+  async created() {
+    // fetch the thread
+    const thread = await this.$store.dispatch('fetchThread', { id: this.id });
+
+    // fetch the user
+    this.$store.dispatch('fetchUser', { id: thread.userId });
+
+    // fetch the posts
+    const posts = await this.$store.dispatch('fetchPosts', {
+      ids: thread.posts,
+    });
+    // fetch the users associated with the posts
+    const users = posts.map((post) => post.userId);
+    this.$store.dispatch('fetchUsers', { ids: users });
   },
 };
 </script>
