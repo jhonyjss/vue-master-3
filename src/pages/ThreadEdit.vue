@@ -1,59 +1,47 @@
 <template>
-  <div class="col-full push-top">
+  <div v-if="thread && text" class="col-full push-top">
     <h1>
-      Editing new thread in <i>{{ thread.title }}</i>
+      Editing <i>{{ thread.title }}</i>
     </h1>
-    <ThreadEditor
-      :title="thread.title"
-      :text="text"
-      @save="save"
-      @cancel="cancel"
-    />
+
+    <ThreadEditor :title="thread.title" :text="text" @save="save" @cancel="cancel" />
   </div>
 </template>
-
 <script>
-import ThreadEditor from '@/components/ThreadEditor';
+import ThreadEditor from '@/components/ThreadEditor'
+import { findById } from '@/helpers'
+import { mapActions } from 'vuex'
 export default {
-  components: {
-    ThreadEditor,
-  },
+  components: { ThreadEditor },
   props: {
-    id: {
-      type: String,
-      required: true,
-    },
+    id: { type: String, required: true },
   },
-
   computed: {
     thread() {
-      return this.$store.state.threads.find((thread) => thread.id === this.id);
+      return findById(this.$store.state.threads, this.id)
     },
-
     text() {
-      return this.$store.state.posts.find(
-        (post) => post.id === this.thread.posts[0]
-      ).text;
+      const post = findById(this.$store.state.posts, this.thread.posts[0])
+      return post ? post.text : ''
     },
   },
-
   methods: {
+    ...mapActions(['fetchThread', 'fetchPost', 'updateThread']),
     async save({ title, text }) {
-      //dispatch a vuex action
-      const thread = await this.$store.dispatch('updateThread', {
+      const thread = await this.updateThread({
         id: this.id,
         title,
         text,
-      });
-
-      this.$router.push({ name: 'ThreadShow', params: { id: thread.id } });
+      })
+      this.$router.push({ name: 'ThreadShow', params: { id: thread.id } })
     },
-
     cancel() {
-      this.$router.push({ name: 'ThreadShow', param: { id: this.thread.id } });
+      this.$router.push({ name: 'ThreadShow', params: { id: this.id } })
     },
   },
-};
+  async created() {
+    const thread = await this.fetchThread({ id: this.id })
+    this.fetchPost({ id: thread.posts[0] })
+  },
+}
 </script>
-
-<style lang="scss" scoped></style>

@@ -16,14 +16,10 @@
       <ul>
         <li v-if="authUser" class="navbar-user">
           <router-link :to="{ name: 'Profile' }">
-            <img
-              class="avatar-small"
-              src="https://pbs.twimg.com/profile_images/1188775562657091594/5mgkg44t_400x400.jpg"
-              alt=""
-            />
+            <img class="avatar-small" :src="authUser.avatar" :alt="`${authUser.name} profile picture`" />
             <span>
               {{ authUser.name }}
-              <img class="icon-profile" :src="authUser.avatar" alt="" />
+              <img class="icon-profile" src="../assets/svg/arrow-profile.svg" alt="" />
             </span>
           </router-link>
 
@@ -32,46 +28,45 @@
           <div id="user-dropdown">
             <div class="triangle-drop"></div>
             <ul class="dropdown-menu">
-              <li class="dropdown-menu-item">
-                <a href="profile.html">View profile</a>
-              </li>
+              <li class="dropdown-menu-item"><a href="profile.html">View profile</a></li>
               <li class="dropdown-menu-item"><a href="#">Log out</a></li>
             </ul>
           </div>
         </li>
       </ul>
 
-      <!-- <ul>
-        <li class="navbar-item">
-          <a href="index.html">Home</a>
-        </li>
-        <li class="navbar-item">
-          <a href="category.html">Category</a>
-        </li>
-        <li class="navbar-item">
-          <a href="forum.html">Forum</a>
-        </li>
-        <li class="navbar-item">
-          <a href="thread.html">Thread</a>
-        </li>
-        <li class="navbar-item mobile-only">
-          <a href="profile.html">My Profile</a>
-        </li>
-        <li class="navbar-item mobile-only">
-          <a href="#">Logout</a>
-        </li> 
-      </ul>-->
+      <!--      <ul>-->
+      <!--        <li class="navbar-item">-->
+      <!--          <a href="index.html">Home</a>-->
+      <!--        </li>-->
+      <!--        <li class="navbar-item">-->
+      <!--          <a href="category.html">Category</a>-->
+      <!--        </li>-->
+      <!--        <li class="navbar-item">-->
+      <!--          <a href="forum.html">Forum</a>-->
+      <!--        </li>-->
+      <!--        <li class="navbar-item">-->
+      <!--          <a href="thread.html">Thread</a>-->
+      <!--        </li>-->
+      <!--        &lt;!&ndash; Show these option only on mobile&ndash;&gt;-->
+      <!--        <li class="navbar-item mobile-only">-->
+      <!--          <a href="profile.html">My Profile</a>-->
+      <!--        </li>-->
+      <!--        <li class="navbar-item mobile-only">-->
+      <!--          <a href="#">Logout</a>-->
+      <!--        </li>-->
+      <!--      </ul>-->
     </nav>
   </header>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters(['authUser']),
   },
-};
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>

@@ -5,12 +5,7 @@
         <h1>{{ forum.name }}</h1>
         <p class="text-lead">{{ forum.description }}</p>
       </div>
-      <router-link
-        :to="{ name: 'ThreadCreate', params: { forumId: forum.id } }"
-        class="btn-green btn-small"
-      >
-        Start a thread
-      </router-link>
+      <router-link :to="{ name: 'ThreadCreate', params: { forumId: forum.id } }" class="btn-green btn-small"> Start a thread </router-link>
     </div>
   </div>
 
@@ -20,8 +15,9 @@
 </template>
 
 <script>
-import ThreadList from '@/components/ThreadList';
-import { findById } from '@/helpers';
+import ThreadList from '@/components/ThreadList'
+import { findById } from '@/helpers'
+import { mapActions } from 'vuex'
 export default {
   components: { ThreadList },
   props: {
@@ -32,25 +28,22 @@ export default {
   },
   computed: {
     forum() {
-      return findById(this.$store.state.forums, this.id);
+      return findById(this.$store.state.forums, this.id)
     },
     threads() {
-      if (!this.forum) return [];
-      return this.forum.threads.map((threadId) =>
-        this.$store.getters.thread(threadId)
-      );
+      if (!this.forum) return []
+      return this.forum.threads.map((threadId) => this.$store.getters.thread(threadId))
     },
   },
-  async created() {
-    const forum = await this.$store.dispatch('fetchForum', { id: this.id });
-    const threads = await this.$store.dispatch('fetchThreads', {
-      ids: forum.threads,
-    });
-    this.$store.dispatch('fetchUsers', {
-      ids: threads.map((thread) => thread.userId),
-    });
+  methods: {
+    ...mapActions(['fetchForum', 'fetchThreads', 'fetchUsers']),
   },
-};
+  async created() {
+    const forum = await this.fetchForum({ id: this.id })
+    const threads = await this.fetchThreads({ ids: forum.threads })
+    this.fetchUsers({ ids: threads.map((thread) => thread.userId) })
+  },
+}
 </script>
 
 <style scoped></style>

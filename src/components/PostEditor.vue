@@ -1,27 +1,14 @@
 <template>
-  <form @submit.prevent="addPost">
-    <div class="form-group">
-      <label for="thread_title">Title:</label>
-      <input type="text" id="thread_title" class="form-input" name="title" />
-    </div>
-
-    <div class="form-group">
-      <label for="thread_content">Content:</label>
-      <textarea
-        v-model="text"
-        id="thread_content"
-        class="form-input"
-        name="content"
-        rows="8"
-        cols="140"
-      ></textarea>
-    </div>
-
-    <div class="btn-group">
-      <button class="btn btn-ghost">Cancel</button>
-      <button class="btn btn-blue" type="submit" name="Publish">Publish</button>
-    </div>
-  </form>
+  <div class="col-full">
+    <form @submit.prevent="save">
+      <div class="form-group">
+        <textarea v-model="text" name="" id="" cols="30" rows="10" class="form-input" />
+      </div>
+      <div class="form-actions">
+        <button class="btn-blue">Submit post</button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -29,23 +16,19 @@ export default {
   data() {
     return {
       text: '',
-    };
+    }
   },
   methods: {
-    addPost() {
+    save() {
       const post = {
         text: this.text,
-        /* threadId: this.id,
-        userId: 'rpbB8C6ifrYmNDufMERWfQUoa202', */
-      };
+      }
+      this.$emit('save', { post }) // access under eventData.post
 
-      this.$emit('save', { post }); // access under eventData.post
-      // this.posts.push(post);
-      // this.thread.posts.push(postId);
-      this.text = '';
+      this.text = ''
     },
   },
-};
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>
