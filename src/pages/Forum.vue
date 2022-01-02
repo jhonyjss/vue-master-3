@@ -10,7 +10,7 @@
   </div>
 
   <div class="col-full push-top">
-    <ThreadList :threads="threads" />
+    <ThreadList v-if="threads" :threads="threads" />
   </div>
 </template>
 
