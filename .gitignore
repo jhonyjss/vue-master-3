@@ -25,3 +25,4 @@ pnpm-debug.log*
 serviceAccount.json
 /src/config/*
 !/src/config/README.md
+/src/data.json
