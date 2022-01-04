@@ -5,8 +5,11 @@ import ThreadEdit from '@/pages/ThreadEdit'
 import NotFound from '@/pages/NotFound'
 import Forum from '@/pages/Forum'
 import Category from '@/pages/Category'
+import Register from '@/pages/Register'
 import { createRouter, createWebHistory } from 'vue-router'
+import sourceData from '@/data.json'
 import Profile from '@/pages/Profile'
+import { findById } from '@/helpers'
 import store from '@/store'
 const routes = [
   {
@@ -72,6 +75,11 @@ const routes = [
     name: 'ThreadEdit',
     component: ThreadEdit,
     props: true,
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register,
   },
   {
     path: '/:pathMatch(.*)*',
