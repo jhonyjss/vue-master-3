@@ -19,7 +19,7 @@
             {{ post.text }}
           </p>
         </div>
-        <a v-if="post.userId === $store.state.authId" @click.prevent="toggleEditMode(post.id)" href="#" style="margin-left: auto; padding-left: 10px" class="link-unstyled" title="Make a change">
+        <a v-if="post.userId === $store.state.auth.authId" @click.prevent="toggleEditMode(post.id)" href="#" style="margin-left: auto; padding-left: 10px" class="link-unstyled" title="Make a change">
           <fa icon="pencil-alt" />
         </a>
       </div>
@@ -50,13 +50,13 @@ export default {
   },
   computed: {
     users() {
-      return this.$store.state.users
+      return this.$store.state.users.items
     },
   },
   methods: {
-    ...mapActions(['updatePost']),
+    ...mapActions('posts', ['updatePost']),
     userById(userId) {
-      return this.$store.getters.user(userId)
+      return this.$store.getters['users/user'](userId)
     },
     toggleEditMode(id) {
       this.editing = id === this.editing ? null : id
