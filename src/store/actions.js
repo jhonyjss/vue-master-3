@@ -1,7 +1,6 @@
 import firebase from 'firebase'
-import { findById, docToResource } from '@/helpers'
 export default {
-  fetchItem({ state, commit }, { id, emoji, resource, handleUnsubscribe = null }) {
+  fetchItem({ commit }, { id, emoji, resource, handleUnsubscribe = null }) {
     console.log('🔥', emoji, id)
     return new Promise((resolve) => {
       const unsubscribe = firebase
